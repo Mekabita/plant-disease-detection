@@ -1,0 +1,141 @@
+<!-- detect_disease/templates/detect_disease/index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detection System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: transparent;
+        }
+
+        .navbar-brand {
+            color: #ffffff; 
+            font-size: 1.5rem; 
+        }
+
+        .navbar-text {
+            color: #ffffff; 
+            font-size: 1.2rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .row {
+            width: 80%; 
+            margin: 0 auto;
+        }
+
+        #preview-image {
+            width: 580px;
+            height: 580px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #prediction-result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #upload-buttons {
+            display: flex;
+            /* width: 50%; */
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            /* margin-top: 20px; */
+        }
+
+        .btn-upload {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 20px;
+        }
+
+        .left-column {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px 0;
+            border-radius: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .circle {
+            width: 600px;
+            height: 600px;
+            border: 5px solid #81C784; 
+            border-radius: 50%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand lead" href="#">Plant Guard:
+              <small class="text-body-secondary">Automatic Plant Disease Assessment</small> 
+            </a>
+            <span class="navbar-text lead ml-auto">PyNinja Clan</span>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-8 left-column">
+              <div class="circle">
+                <img id="preview-image" src="static/detect_disease/plant_image.jpg" alt="Uploaded Image">
+                {% if uploaded_image_url %}
+                      <img id="preview-image" src="{% get_static_prefix %}{{ uploaded_image_url }}" alt="Uploaded Image">
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="col-md-4">
+                <h2 class="lead text-center">Analysis Dashboard</h2>
+                <form method="post" enctype="multipart/form-data" id="upload-form">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" name="plant-image-upload" class="btn btn-primary btn-upload">Upload Image</button>
+                    <div id="upload-buttons">
+                        <button name="plant-image-predict" class="btn btn-success btn-upload" onclick="predictDisease()">Predict Disease</button>
+                    </div>
+                </form>
+                <div id="prediction-result">
+                    <h1 class='lead'>Model Prediction</h1><br>
+                    {% if prediction %}
+                        <h3 class='lead'>{{ prediction }}</h3>
+                    {% else %}
+                        <h3 class='lead'>No prediction yet</h3>
+                    {% endif %}
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
